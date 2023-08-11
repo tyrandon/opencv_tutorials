@@ -1,14 +1,17 @@
 import cv2 as cv
 import numpy as np
 import os
+from enum import Enum
 
 
 # Change the working directory to the folder this script is in.
 # Doing this because I'll be putting the files from each video in their own folder on GitHub
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+tftChampionPoolSizes = [(0, 0), (1, 14), (14, 27), (27, 40), (40, 52), (52, 60), (60, 64)]
+tftUnitPositions = [(850, 880), (1115, 1145), (1385, 1415), (1655, 1685), (1925, 1955)]
 
-def findClickPositions(needle_img_path, haystack_img_path, threshold=0.5, debug_mode=None):
+def findClickPositions(needle_img_path, haystack_img_path, threshold=0.8, debug_mode=None):
         
     # https://docs.opencv.org/4.2.0/d4/da8/group__imgcodecs.html
     haystack_img = cv.imread(haystack_img_path, cv.IMREAD_UNCHANGED)
@@ -82,10 +85,115 @@ def findClickPositions(needle_img_path, haystack_img_path, threshold=0.5, debug_
 
     return points
 
+def identifyUnit(haystack_img_path, position=(0, 0), counter=0):
+    temp_cropped_img = cv.imread(haystack_img_path, cv.IMREAD_UNCHANGED)[position[1] - 172 : position[1] - 3, position[0] - 230 : position[0] + 40]
+    cv.imwrite('temp_cropped_img.png', temp_cropped_img)
+    points = []
+    poolSize = tftChampionPoolSizes[counter]
+    for num in range(poolSize[0], poolSize[1]):
+        points = findClickPositions('Images/ChampionImages/TFT_Champion_Img' + str(num) + '.png', 'temp_cropped_img.png', 0.8, None)
+        if (len(points) > 0):
+            return TFTChampions(num).name
+    print('Champion not found.')
+    return ''
 
-points = findClickPositions('albion_cabbage.jpg', 'albion_farm.jpg', debug_mode='points')
-print(points)
-points = findClickPositions('albion_turnip.jpg', 'albion_farm.jpg', 
-                            threshold=0.70, debug_mode='rectangles')
-print(points)
-print('Done.')
+def findShopUnits(haystack_img_path, threshold=0.8, debug_mode=None):
+    unitPositions = []
+    for num in range(1, 7):
+        points = findClickPositions('Images/OtherTFTImages/TFT_Cost' + str(num) + '.png', haystack_img_path, threshold, debug_mode)
+        unitPositions.append(points)
+        #print(points)
+    #print(unitPositions)
+    counter = 0
+    realUnitPositions = []
+    for cost in unitPositions:
+        counter+=1
+        for position in cost:
+            if position[0] > 500:
+                championName = identifyUnit(haystack_img_path, position, counter)
+                realUnitPositions.append((position, championName))
+    realUnitPositions = sorted(realUnitPositions)
+    #print(realUnitPositions)
+    shop = []
+    counter = 0
+    for pos in range(5):
+        if tftUnitPositions[pos][0] < realUnitPositions[counter][0][0] < tftUnitPositions[pos][1]:
+            shop.append(realUnitPositions[counter][1])
+            counter+=1
+        else:
+            shop.append(TFTChampions(0).name)
+    print(shop)
+    print('Done')
+
+class TFTChampions(Enum):
+    NOCHAMPION = 0
+    CASSIOPEIA = 1
+    CHOGATH = 2
+    IRELIA = 3
+    JHIN = 4
+    KAYLE = 5
+    MALZAHAR = 6
+    MAOKAI = 7
+    ORIANNA = 8
+    POPPY = 9
+    RENEKTON = 10
+    SAMIRA = 11
+    TRISTANA = 12
+    VIEGO = 13
+    ASHE = 14
+    GALIO = 15
+    JINX = 16
+    KASSADIN = 17
+    KLED = 18
+    SETT = 19
+    SORAKA = 20
+    SWAIN = 21
+    TALIYAH = 22
+    TEEMO = 23
+    VI = 24
+    WARWICK = 25
+    ZED = 26
+    AKSHAN = 27
+    DARIUS = 28
+    EKKO = 29
+    GAREN = 30
+    JAYCE = 31
+    KALISTA = 32
+    KARMA = 33
+    KATARINA = 34
+    LISSANRA = 35
+    REKSAI = 36
+    SONA = 37
+    TARIC = 38
+    VELKOZ = 39
+    APHELIOS = 40
+    AZIR = 41
+    GWEN = 42
+    JARVAN = 43
+    KAISA = 44
+    LUX = 45
+    NASUS = 46
+    SEJUANI = 47
+    SHEN = 48
+    URGOT = 49
+    YASUO = 50
+    ZERI = 51
+    AATROX = 52
+    AHRI = 53
+    BELVETH = 54
+    HEIMERDINGER = 55
+    KSANTE = 56
+    RYZE = 57
+    SENNA = 58
+    SION = 59
+    GOLDINATOR = 60
+    MECHANOSWARM = 61
+    SELFREPAIR = 62
+    SHRINKMODULE = 63
+
+
+#points = findClickPositions('Images/ChampionImages/TFT_Champion_Img41.png', 'Images/TFTScreenshots/TFT_Screenshot2.png', threshold=0.70, debug_mode='rectangles')
+#print(points)
+#print('Done.')
+findShopUnits('Images/TFTScreenshots/TFT_Screenshot1.png', threshold=0.8, debug_mode=None)
+findShopUnits('Images/TFTScreenshots/TFT_Screenshot2.png', threshold=0.8, debug_mode=None)

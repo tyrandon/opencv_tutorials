@@ -10,21 +10,21 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # Can use IMREAD flags to do different pre-processing of image files,
 # like making them grayscale or reducing the size.
 # https://docs.opencv.org/4.2.0/d4/da8/group__imgcodecs.html
-haystack_img = cv.imread('albion_farm.jpg', cv.IMREAD_UNCHANGED)
-needle_img = cv.imread('albion_cabbage.jpg', cv.IMREAD_UNCHANGED)
+haystack_img = cv.imread('Images/TFTScreenshots/TFT_Screenshot2.png', cv.IMREAD_UNCHANGED)
+needle_img = cv.imread('Images/ChampionImages/TFT_Champion_Img42.png', cv.IMREAD_UNCHANGED)
 
 # There are 6 comparison methods to choose from:
 # TM_CCOEFF, TM_CCOEFF_NORMED, TM_CCORR, TM_CCORR_NORMED, TM_SQDIFF, TM_SQDIFF_NORMED
 # You can see the differences at a glance here:
 # https://docs.opencv.org/master/d4/dc6/tutorial_py_template_matching.html
 # Note that the values are inverted for TM_SQDIFF and TM_SQDIFF_NORMED
-result = cv.matchTemplate(haystack_img, needle_img, cv.TM_SQDIFF_NORMED)
+result = cv.matchTemplate(haystack_img, needle_img, cv.TM_CCOEFF_NORMED)
 
 # I've inverted the threshold and where comparison to work with TM_SQDIFF_NORMED
-threshold = 0.17
+threshold = 0.80
 # The np.where() return value will look like this:
 # (array([482, 483, 483, 483, 484], dtype=int32), array([514, 513, 514, 515, 514], dtype=int32))
-locations = np.where(result <= threshold)
+locations = np.where(result >= threshold)
 # We can zip those up into a list of (x, y) position tuples
 locations = list(zip(*locations[::-1]))
 print(locations)

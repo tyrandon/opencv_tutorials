@@ -15,8 +15,7 @@ class WindowCapture:
 
     # constructor
     def __init__(self, window_name=None):
-        # find the handle for the window we want to capture.
-        # if no window name is given, capture the entire screen
+        # find the handle for the window we want to capture
         if window_name is None:
             self.hwnd = win32gui.GetDesktopWindow()
         else:
@@ -30,12 +29,12 @@ class WindowCapture:
         self.h = window_rect[3] - window_rect[1]
 
         # account for the window border and titlebar and cut them off
-        border_pixels = 8
-        titlebar_pixels = 30
-        self.w = self.w - (border_pixels * 2)
-        self.h = self.h - titlebar_pixels - border_pixels
-        self.cropped_x = border_pixels
-        self.cropped_y = titlebar_pixels
+        #border_pixels = 8
+        #titlebar_pixels = 30
+        #self.w = self.w - (border_pixels * 2)
+        #self.h = self.h - titlebar_pixels - border_pixels
+        #self.cropped_x = border_pixels
+        #self.cropped_y = titlebar_pixels
 
         # set the cropped coordinates offset so we can translate screenshot
         # images into actual screen positions
@@ -82,8 +81,7 @@ class WindowCapture:
     # find the name of the window you're interested in.
     # once you have it, update window_capture()
     # https://stackoverflow.com/questions/55547940/how-to-get-a-list-of-the-name-of-every-open-window
-    @staticmethod
-    def list_window_names():
+    def list_window_names(self):
         def winEnumHandler(hwnd, ctx):
             if win32gui.IsWindowVisible(hwnd):
                 print(hex(hwnd), win32gui.GetWindowText(hwnd))

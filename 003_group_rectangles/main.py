@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import os
+from time import time
 from enum import Enum
 
 
@@ -195,5 +196,9 @@ class TFTChampions(Enum):
 #points = findClickPositions('Images/ChampionImages/TFT_Champion_Img41.png', 'Images/TFTScreenshots/TFT_Screenshot2.png', threshold=0.70, debug_mode='rectangles')
 #print(points)
 #print('Done.')
+loop_time = time()
 findShopUnits('Images/TFTScreenshots/TFT_Screenshot1.png', threshold=0.8, debug_mode=None)
+print('Time Taken {}'.format(time() - loop_time))
+loop_time = time()
 findShopUnits('Images/TFTScreenshots/TFT_Screenshot2.png', threshold=0.8, debug_mode=None)
+print('Time Taken {}'.format(time() - loop_time))

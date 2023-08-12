@@ -11,9 +11,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 # initialize the WindowCapture class
-wincap = WindowCapture('Albion Online Client')
+wincap = WindowCapture()
 # initialize the Vision class
-vision_limestone = Vision('albion_limestone.jpg')
+vision_shop = Vision()
 
 '''
 # https://www.crazygames.com/game/guns-and-bottle
@@ -21,24 +21,33 @@ wincap = WindowCapture()
 vision_gunsnbottle = Vision('gunsnbottle.jpg')
 '''
 
-loop_time = time()
+#loop_time = time()
 while(True):
 
     # get an updated image of the game
     screenshot = wincap.get_screenshot()
+    screenshot = cv.cvtColor(screenshot, cv.COLOR_BGR2GRAY)
 
     # display the processed image
-    points = vision_limestone.find(screenshot, 0.5, 'rectangles')
+    #points = vision_limestone.find(screenshot, 0.5, 'rectangles')
     #points = vision_gunsnbottle.find(screenshot, 0.7, 'points')
 
     # debug the loop rate
-    print('FPS {}'.format(1 / (time() - loop_time)))
-    loop_time = time()
+    #print('FPS {}'.format(1 / (time() - loop_time)))
+    #loop_time = time()
 
     # press 'q' with the output window focused to exit.
     # waits 1 ms every loop to process key presses
-    if cv.waitKey(1) == ord('q'):
+    #if cv.waitKey(1) == ord('c'):
+        #vision_shop.getCrop(screenshot)    
+    if cv.waitKey(1) == ord('m'):
+        #print('ay u pressed m')
+        points = vision_shop.findShopUnits(screenshot, 0.8)
+        #print('the thing finished')
+    elif cv.waitKey(1) == ord('q'):
         cv.destroyAllWindows()
         break
+    else:
+        cv.imshow('Computer Vision', screenshot)
 
 print('Done.')

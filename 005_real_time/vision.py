@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
-from time import time
+import pyautogui
+from time import sleep, time
 from enum import Enum
 
 
@@ -129,6 +130,7 @@ class Vision:
                 unitPositions.append((-1, -1))
                 shop.append(TFTChampions(0).name)    
         print(shop)
+        return shop
 
     def getCrop(self, haystack_img):
         print('getting crop')
@@ -138,6 +140,14 @@ class Vision:
             needle_img = cv.imread('Images/OtherTFTImages/TFT_Cost' + str(num) + '.png', cv.IMREAD_UNCHANGED)
             cv.imwrite('TFT_Cost' + str(num) + '.png', needle_img)
         print('cropped')
+
+    def buyShopUnit(self, position = ord('1')):
+        position_integer = position - ord('0')
+        if 0 < position_integer < 6:
+            x_value = 500 + (position_integer * 268)
+            pyautogui.moveTo(x=x_value, y=1313)
+            print('Click on shop unit #{} at x:{} y:{}'.format(position_integer, x_value, 1313))
+            pyautogui.click()
 
 class TFTChampions(Enum):
     NOCHAMPION = 0

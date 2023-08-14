@@ -215,12 +215,22 @@ class TFTChampions(Enum):
 
         
 # https://docs.opencv.org/4.2.0/d4/da8/group__imgcodecs.html
-'''haystack_img = cv.imread('crop.png', cv.IMREAD_UNCHANGED)
-for num in range(1, 7):
-    needle_img = cv.imread('Images/OtherTFTImages/TFT_Cost' + str(num) + '.png', cv.IMREAD_UNCHANGED)
-    needle_img = cv.cvtColor(needle_img, cv.COLOR_BGR2GRAY)
-    points = findClickPositions(needle_img, haystack_img, 0.8, 'rectangles')
-    print(points)'''
+haystack_img = cv.imread('Images/TFTScreenshots/TFT_Screenshot2.png', cv.IMREAD_UNCHANGED)
+needle_img = cv.imread('Images/ChampionImages/TFT_Champion_Img10.png', cv.IMREAD_UNCHANGED)
+points = findClickPositions(needle_img, haystack_img, 0.8, 'points')
+print(points)
+needle_img = cv.imread('Images/ChampionImages/TFT_Champion_Img30.png', cv.IMREAD_UNCHANGED)
+points = findClickPositions(needle_img, haystack_img, 0.8, 'points')
+print(points)
+needle_img = cv.imread('Images/ChampionImages/TFT_Champion_Img36.png', cv.IMREAD_UNCHANGED)
+points = findClickPositions(needle_img, haystack_img, 0.8, 'points')
+print(points)
+needle_img = cv.imread('Images/ChampionImages/TFT_Champion_Img4.png', cv.IMREAD_UNCHANGED)
+points = findClickPositions(needle_img, haystack_img, 0.8, 'points')
+print(points)
+needle_img = cv.imread('Images/ChampionImages/TFT_Champion_Img42.png', cv.IMREAD_UNCHANGED)
+points = findClickPositions(needle_img, haystack_img, 0.8, 'points')
+print(points)
 '''
 haystack_img = cv.imread('Images/TFTScreenshots/TFT_Screenshot1.png', cv.IMREAD_UNCHANGED)
 needle_img = cv.imread('Images/OtherTFTImages/TFT_Shop_Champs.png', cv.IMREAD_UNCHANGED)

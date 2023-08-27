@@ -8,13 +8,15 @@ from enum import Enum
 class Vision:
 
     # properties
+    gold = 0
     method = None
     tftChampionPoolSizes = [(0, 0), (1, 14), (14, 27), (27, 40), (40, 52), (52, 60), (60, 64)]
     #tftUnitPositions = [(850, 880), (1115, 1145), (1385, 1415), (1655, 1685), (1925, 1955)]
 
     # constructor
-    def __init__(self, method=cv.TM_CCOEFF_NORMED):
+    def __init__(self, method=cv.TM_CCOEFF_NORMED, gold = 0):
         self.method = method
+        self.gold = gold
 
     def findClickPositions(self, needle_img, haystack_img, threshold=0.5, debug_mode=None):
         # Save the dimensions of the needle image
@@ -148,6 +150,11 @@ class Vision:
             pyautogui.moveTo(x=x_value, y=1313)
             print('Click on shop unit #{} at x:{} y:{}'.format(position_integer, x_value, 1313))
             pyautogui.click()
+
+    def updateGold(self, haystack_img):
+        print('current gold: ' + self.gold)
+        cropped_img = haystack_img[1380 : 1432, 837 : 2217]
+        
 
 class TFTChampions(Enum):
     NOCHAMPION = 0

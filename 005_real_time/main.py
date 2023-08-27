@@ -21,7 +21,7 @@ wincap = WindowCapture()
 vision_gunsnbottle = Vision('gunsnbottle.jpg')
 '''
 
-loop_time = time()
+#loop_time = time()
 while(True):
 
     # get an updated image of the game
@@ -33,8 +33,8 @@ while(True):
     #points = vision_gunsnbottle.find(screenshot, 0.7, 'points')
 
     # debug the loop rate
-    print('FPS {}'.format(1 / (time() - loop_time)))
-    loop_time = time()
+    #print('FPS {}'.format(1 / (time() - loop_time)))
+    #loop_time = time()
 
     # press 'q' with the output window focused to exit.
     # waits 1 ms every loop to process key presses
